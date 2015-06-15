@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,10 +18,28 @@ public class MainActivity extends AppCompatActivity {
         btnStartServcice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,MyStartService.class);
+                intent = new Intent(MainActivity.this,MyStartService.class);
                 startService(intent);
             }
         });
+
+        Button btnStopService = (Button) findViewById(R.id.stopService);
+        btnStopService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopService(intent);
+            }
+        });
+
+        Button btnIntentService = (Button) findViewById(R.id.intentServcice);
+        btnIntentService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(MainActivity.this,MyIntentService.class);
+                startService(intent);
+            }
+        });
+
     }
 
     @Override

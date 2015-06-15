@@ -18,8 +18,22 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/stopService"
+        android:text="stopService"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/bindService"
         android:text="bindService"
         />
+
+    <Button
+        android:id="@+id/intentServcice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="IntentService"
+        />
+
 
 </LinearLayout>
