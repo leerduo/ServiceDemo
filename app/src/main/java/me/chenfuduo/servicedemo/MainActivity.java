@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.os.Messenger;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     MyBindService mService;
 
-    boolean mBound = false;
+     boolean mBound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
