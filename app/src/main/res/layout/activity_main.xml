@@ -29,6 +29,20 @@
         />
 
     <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/communicate"
+        android:text="communicate"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/unBindService"
+        android:text="unBindService"
+        />
+
+    <Button
         android:id="@+id/intentServcice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

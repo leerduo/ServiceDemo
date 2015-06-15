@@ -1,15 +1,25 @@
 package me.chenfuduo.servicedemo;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     Intent intent;
+
+    MyBindService mService;
+
+    boolean mBound = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         btnStartServcice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(MainActivity.this,MyStartService.class);
+                intent = new Intent(MainActivity.this, MyStartService.class);
                 startService(intent);
             }
         });
@@ -35,32 +45,59 @@ public class MainActivity extends AppCompatActivity {
         btnIntentService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(MainActivity.this,MyIntentService.class);
+                intent = new Intent(MainActivity.this, MyIntentService.class);
                 startService(intent);
+            }
+        });
+
+        Button btnBindService = (Button) findViewById(R.id.bindService);
+        btnBindService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(MainActivity.this, MyBindService.class);
+                bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
+            }
+        });
+
+        Button btnCommunicate = (Button) findViewById(R.id.communicate);
+
+        btnCommunicate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mBound) {
+                    int randomNumber = mService.getRandomNumber();
+                    Toast.makeText(MainActivity.this, "通讯:" + randomNumber, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        Button btnUnBindService = (Button) findViewById(R.id.unBindService);
+        btnUnBindService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mBound) {
+                    unbindService(mServiceConnection);
+                    mBound = false;
+                }
             }
         });
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    /**
+     * Defines callbacks for service binding, passed to bindService()
+     */
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MyBindService.LocalBinder binder = (MyBindService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBound = false;
+        }
+    };
+
 }
